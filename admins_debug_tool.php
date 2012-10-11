@@ -4,7 +4,7 @@ Plugin Name: Admin's Debug Tool
 Plugin URI: http://http://measurablewins.blogspot.com/
 Description: Admin-only tool for checking execution times and error output of current theme/plugins 
 Author: Greg Jackson	
-Version: 0.0.1a
+Version: 0.0.2
 */
 
 AdminDebugTool::instance();
@@ -358,7 +358,7 @@ class AdminDebugTool
 		
 			if(!empty($hookset)) {
 				// core hook relative ms 
-				$output_text  .= "\n\nHooks observed, timestamps and times\n========================";
+				$output_text  .= "\n\nHooks observed, timestamps and times\n====================================";
 				$prev_ts = 0;
 				$avg_ms = ($this->data['page_ms']/count($hookset));
 				$slowquery_done = !($this->options['QUERYLOG']);
@@ -400,7 +400,7 @@ class AdminDebugTool
 
 
 	function adminMenu() {
-		add_submenu_page( 'tools.php', 'Admin\'s Debug Tools', 'Admin\'s Debug Tools', 'update_plugins', 'admindebugtool', array($this,'adminForm') );
+		add_submenu_page( 'tools.php', 'Admin\'s Debug Tool', 'Admin\'s Debug Tool', 'update_plugins', 'admindebugtool', array($this,'adminForm') );
 	}
 	
 	

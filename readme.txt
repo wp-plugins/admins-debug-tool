@@ -22,6 +22,10 @@ The admin-only nature of this plugin can also be useful when trying to track iss
 
 == Changelog ==
 
-= v0.1a 2012-10-11 =
+= v0.0.2 2012-10-11 =
+
+* Fixed small display / typo issues
+
+= v0.0.1a 2012-10-11 =
 
 * Initial release
