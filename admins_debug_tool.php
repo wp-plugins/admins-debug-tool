@@ -4,7 +4,7 @@ Plugin Name: Admin's Debug Tool
 Plugin URI: http://http://measurablewins.blogspot.com/
 Description: Admin-only tool for checking execution times and error output of current theme/plugins 
 Author: Greg Jackson	
-Version: 0.0.2
+Version: 0.1
 */
 
 AdminDebugTool::instance();
@@ -442,27 +442,28 @@ class AdminDebugTool
 		<div id="icon-options-general" class="icon32"><br></div>
 		<h2>Admin\'s Debug Tool</h2>
 		
-		<p>IMPORTANT:<br/>
+		<p class="description">IMPORTANT: 
 			These settings will only enable output on pages for a logged in Administrator, however, that output <em>may</em> be cached and displayed for other users depending on your WordPress environment.</p>
 		
+		<hr/>
 		<form method="post">
 		
 		<h3>Runtime DEBUG mode</h3>
 		<p><input type="checkbox" value="1" name="options[WP_DEBUG]" '.checked(1, $this->options['WP_DEBUG'],false).'> Enable DEBUG mode.</p>
-		<p>Debug mode is only enabled for logged in Administrators from the point that this plugin is initialized.<br/>
+		<p class="description">Debug mode is only enabled for logged in Administrators from the point that this plugin is initialized.<br/>
 		For a description of WP_DEBUG and how to enable refer to <a href="http://codex.wordpress.org/Debugging_in_WordPress">Debugging in WordPress</a>.</p>
 
-
+		<hr/>
 		<h3>Display Page Summary Data</h3>
 		<p>Output the data summary <select name="options[show_summary]">
-			<option value="1" '.selected( $this->options[show_summary], 1, 0).'>visibly at the bottom of the page</option>
-			<option value="0" '.selected( $this->options[show_summary], 0, 0).'>hidden in the page source</option>
-			</select> (This does NOT control any DEBUG output.)<p>		
+			<option value="1" '.selected( $this->options['show_summary'], 1, 0).'>visibly at the bottom of the page</option>
+			<option value="0" '.selected( $this->options['show_summary'], 0, 0).'>hidden in the page source</option>
+			</select> <br/><i>Note: This does NOT control any DEBUG output.</i><p>		
 		
-		
+		<hr/>
 		<h3>HOOK Based Functions</h3>
 		<p><input type="checkbox" value="1" name="options[catchHooks]" '.checked(1, $this->options['catchHooks'],false).'> Enable monitoring of Action/Filter hooks.</p>
-		<p>Enabling this option is likely to cause a small increase in page execution time as every hook callback is caught and analyzed.<br/>
+		<p class="description">Enabling this option is likely to cause a small increase in page execution time as every hook callback is caught and analyzed.<br/>
 		Default behavior displays the counts for hooks, sidebars, widgets, queries and cache requests (using <a href="Transients_API">Transients API</a>) and execution times for "core" Hooks in the page summary data.
 		</p>
 		';
@@ -470,39 +471,47 @@ class AdminDebugTool
 		$disabled = ($this->options['catchHooks']) ? '' : ' disabled="disabled" ' ;
 		echo '	
 		<p><input type="checkbox" value="1" name="options[echoHooks]" '.checked(1, $this->options['echoHooks'],false).$disabled.'> Echo core hooks and timestamps in page source.</p>
-		<p>This can give you a better idea of what is happening and when compared to the actual page output. These hooks should not corrupt your page html or layout.</p>
+		<p class="description">
+		This can give you a better idea of what is happening and when compared to the actual page output. 
+		These hooks should not corrupt your page html or layout.</p>
 		
 		<p><input type="checkbox" value="1" name="options[QUERYLOG]" '.checked(1, $this->options['QUERYLOG'],false).$disabled.' > Output QUERY summary.</p>
-		<p>This option will display total and average query execution times, and detail the slowest query executed.</p>
+		<p class="description">This option will display total and average query execution times, and detail the slowest query executed.</p>
 		
+		<hr/>
 		<h3>Advanced Options</h3>
-		<p><b>Custom Core Hooks</b><br/>
-		You can add other hooks to the core hook set by entering the hook name(s) here, one per line<br/>
-		<textarea name="options[customcorehooks]">'.$this->options['customcorehooks'].'</textarea>
+		<p><b>Custom Core Hooks</b><p/>
+		<p class="description">You can add other hooks to the core hook set by entering the hook name(s) here, one per line.<br/>
+		<textarea name="options[customcorehooks]"  rows="4" cols="50">'.$this->options['customcorehooks'].'</textarea></p>
+		
+		
 		
 		<p><input type="checkbox" value="1" name="options[fullHookLog]" '.checked(1, $this->options['fullHookLog'],false).'>
-		<b>Output Complete Hook Log</b><p>
-		Output the full hook log in the page summary and not just core hooks. This will result in a LOT more output, but also a much finer granularity.</p>
+		<b>Output Complete Hook Log</b></p>
+		<p class="description">
+		Output the full hook log in the page summary and not just core hooks. 
+		This will result in a LOT more output, but also a much finer granularity.</p>
 
 		<p><input type="checkbox" value="1" name="options[echoAllHooks]" '.checked(1, $this->options['echoAllHooks'],false).'>
-		<b>Echo ALL Hooks In Page Source</b><p>
+		<b>Echo ALL Hooks In Page Source</b></p>
+		<p class="description">
 		WARNING: This will corrupt html output and page layout, but it will display every hook in relative position to page output.
 		</p>' ;
 	
-		echo '		
+		echo '
 		<p class="submit submit-top">
 			'.wp_nonce_field('admindebugtool').'
 			<input type="submit" name="submit" value="Save Changes" class="button-primary"/>
 		</p>
 		</form>';
 		
-	?>
+	?><hr/>
 	<h3>Notes:</h3>
 	<ol>
-		<li>The ms times are milliseconds relative to the init time of this plugin, so they do not include the loading of earlier WP core components.
-		These times will give a good indication of where page execution time is being spent, but can vary due to server activity, cache states, and plugin options selected.</li>
-	<li>Hook duration times calculated from the time a hook is fired until the next hook is fired. This can produce false positives if an expensive piece of code is executed before the next hook.</li>
-	<li>Processing of Filter and Action Hook data will slightly impact the page speed due to increased memory usage, processing and output size.</li> 
+		<li><i>The ms times are milliseconds relative to the init time of this plugin, so they do not include the loading of earlier WP core components.
+		These times will give a good indication of where page execution time is being spent, but can vary due to server activity, cache states, and plugin options selected.</i></li>
+	<li><i>Hook duration times calculated from the time a hook is fired until the next hook is fired. This can produce false positives if an expensive piece of code is executed before the next hook.</i></li>
+	<li><i>Processing of Filter and Action Hook data will slightly impact the page speed due to increased memory usage, processing and output size.</i></li> 
 	</ol>
 	
 	<?php
